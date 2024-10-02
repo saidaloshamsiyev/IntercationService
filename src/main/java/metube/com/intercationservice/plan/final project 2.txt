@@ -2,7 +2,7 @@ Entity
 
 User- (username,email,password,picturePath,role(USER,ADMIN), VideoEntity,SubscriptionEntity)
 
-Video - (title,description,videoUrl,thumbUrl,Wiews(integer),dislike,CommentEntity,LikeEntity,CategoryEntity)
+Video - (title,description,videoUrl,thumbUrl,views(integer),dislike,CommentEntity,LikeEntity,CategoryEntity)
 
 Comment - (text,LikeEntity)
 
