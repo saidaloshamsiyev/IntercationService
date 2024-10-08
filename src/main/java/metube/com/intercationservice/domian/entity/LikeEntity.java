@@ -3,7 +3,6 @@ package metube.com.intercationservice.domian.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
-import metube.com.intercationservice.domian.enums.LikeType;
 
 import java.util.UUID;
 
@@ -17,6 +16,5 @@ import java.util.UUID;
 @Builder
 public class LikeEntity extends BaseEntity{
     private UUID userId;
-    private LikeType type;
     private UUID videoId;
 }

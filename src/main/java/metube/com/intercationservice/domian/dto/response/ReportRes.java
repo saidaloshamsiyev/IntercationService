@@ -1,23 +1,17 @@
-package metube.com.intercationservice.domian.entity;
+package metube.com.intercationservice.domian.dto.response;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.*;
 import metube.com.intercationservice.domian.enums.ReportType;
 
 import java.util.UUID;
 
-@Entity
-
-
-@Table(name = "report")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class ReportEntity extends BaseEntity {
+public class ReportRes {
+    private UUID id;
     private UUID userId;
     private ReportType type;
     private UUID videoId;
