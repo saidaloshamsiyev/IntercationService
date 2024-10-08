@@ -22,7 +22,7 @@ public class CommitEntity extends BaseEntity {
 
     private UUID userId;
     private String comment;
-    private UUID vedeoId;
+    private UUID videoId;
 
     @OneToMany
     private Set<LikeEntity> likes;
