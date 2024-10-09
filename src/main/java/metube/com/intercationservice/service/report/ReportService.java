@@ -11,5 +11,5 @@ import java.util.UUID;
 public interface ReportService {
     ReportRes createReport(ReportReq reportReq);
     ReportEntity findReportById(UUID id);
-    List<ReportEntity> findAllReports();
+    List<ReportRes> findAllReports();
 }
