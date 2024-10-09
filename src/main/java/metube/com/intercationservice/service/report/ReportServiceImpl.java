@@ -40,7 +40,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public List<ReportEntity> findAllReports() {
+    public List<ReportRes> findAllReports() {
         return reportRepository.findAllBy();
     }
 }
