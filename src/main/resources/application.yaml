@@ -1,9 +1,9 @@
 server:
-  port: 8086
+  port: 8085
 
 spring:
   application:
-    name: INTERACATION_SERVICE
+    name: INTERACTION-SERVICE
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:5432/metube
     username: ${DB_USERNAME:postgres}
@@ -15,11 +15,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect  # To'g'ri dialekt nomi
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 eureka:
   client:
     service-url:
-      defaultZone: ${EUREKA_URL:http://${DB_HOST:localhost}:8761/eureka/}
+      defaultZone: ${EUREKA_URI:http://${EUREKA_HOST:localhost}:8761/eureka/}
   instance:
     preferIpAddress: true
