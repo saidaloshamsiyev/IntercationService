@@ -14,6 +14,10 @@ import java.util.UUID;
 @Builder
 public class HistoryEntity extends BaseEntity {
     private UUID userId;
-    private UUID vedeoId;
+    private UUID videoId;
     private LocalDateTime watchedTime;
 }
+
+
+
+
