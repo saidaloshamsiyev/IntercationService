@@ -38,7 +38,7 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public LikeEntity findById(UUID id) {
         return likeRepository.findById(id)
-                .orElseThrow(() -> new BaseException("You have not clicked like", HttpStatus.NOT_FOUND.value()));
+                .orElseThrow(() -> new BaseException("You have not pushed like", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
