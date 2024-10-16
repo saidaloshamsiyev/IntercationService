@@ -14,7 +14,7 @@ import java.util.UUID;
 public class CommitController {
     private CommitServiceImpl commitService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<CommitRes> create(@RequestBody CommitReq commitReq) {
         CommitRes commitRes = commitService.createCommit(commitReq);
         return ResponseEntity.ok(commitRes);
