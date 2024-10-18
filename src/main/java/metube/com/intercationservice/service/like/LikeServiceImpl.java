@@ -1,8 +1,10 @@
 package metube.com.intercationservice.service.like;
 
 import lombok.RequiredArgsConstructor;
+import metube.com.intercationservice.clients.VideoServiceClient;
 import metube.com.intercationservice.domian.dto.request.LIkeReq;
 import metube.com.intercationservice.domian.dto.response.LikeRes;
+import metube.com.intercationservice.domian.dto.response.VideoResponse;
 import metube.com.intercationservice.domian.entity.LikeEntity;
 import metube.com.intercationservice.exception.BaseException;
 import metube.com.intercationservice.repository.LikeRepository;
@@ -16,9 +18,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class LikeServiceImpl implements LikeService {
     private final LikeRepository likeRepository;
+    private final VideoServiceClient videoServiceClient;
 
     @Override
     public LikeRes create(LIkeReq lIkeReq) {
+
+        //vedio tekshirish
+        VideoResponse videoResponse = videoServiceClient.getVideo(lIkeReq.getVideoId());
+        if (videoResponse == null) {
+            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+        }
+
         likeRepository.findByUserIdAndVideoId(lIkeReq.getUserId(), lIkeReq.getVideoId())
                 .ifPresent(history -> {
                     throw new BaseException("You have already clicked like", HttpStatus.ALREADY_REPORTED.value());
@@ -37,8 +47,16 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public LikeEntity findById(UUID id) {
-        return likeRepository.findById(id)
+        LikeEntity like = likeRepository.findById(id)
                 .orElseThrow(() -> new BaseException("You have not pushed like", HttpStatus.NOT_FOUND.value()));
+
+        //vedio tekshirish
+        VideoResponse videoResponse = videoServiceClient.getVideo(like.getVideoId());
+        if (videoResponse == null) {
+            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+        }
+
+        return like;
     }
 
     @Override
@@ -48,7 +66,14 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public void delete(UUID id) {
-        findById(id);
+        LikeEntity byId = findById(id);
+
+        //vedio tekshirish
+        VideoResponse videoResponse = videoServiceClient.getVideo(byId.getVideoId());
+        if (videoResponse == null) {
+            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+        }
+
         likeRepository.deleteById(id);
     }
 }
