@@ -1,5 +1,6 @@
 package metube.com.intercationservice.controller;
 
+import lombok.RequiredArgsConstructor;
 import metube.com.intercationservice.domian.dto.request.ReportReq;
 import metube.com.intercationservice.domian.dto.response.ReportRes;
 import metube.com.intercationservice.domian.entity.ReportEntity;
@@ -12,9 +13,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/report")
+@RequiredArgsConstructor
 public class ReportController {
 
-    private ReportService reportService;
+    private final ReportService reportService;
 
     @PostMapping
     public ResponseEntity<ReportRes> create(@RequestBody ReportReq report) {
