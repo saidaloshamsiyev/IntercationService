@@ -1,9 +1,9 @@
 package metube.com.intercationservice.config;
 
+import jakarta.ws.rs.HttpMethod;
 import metube.com.intercationservice.filter.CustomFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,6 +21,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(WHITE_LIST).permitAll()
+                                .requestMatchers(HttpMethod.POST, "/commit/**").authenticated()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(new CustomFilter(),

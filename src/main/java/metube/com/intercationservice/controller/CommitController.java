@@ -1,5 +1,6 @@
 package metube.com.intercationservice.controller;
 
+import lombok.RequiredArgsConstructor;
 import metube.com.intercationservice.domian.dto.request.CommitReq;
 import metube.com.intercationservice.domian.dto.response.CommitRes;
 import metube.com.intercationservice.service.commit.CommitServiceImpl;
@@ -11,8 +12,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/commit")
+@RequiredArgsConstructor
 public class CommitController {
-    private CommitServiceImpl commitService;
+    private final CommitServiceImpl commitService;
 
     @PostMapping("/create")
     public ResponseEntity<CommitRes> create(@RequestBody CommitReq commitReq) {

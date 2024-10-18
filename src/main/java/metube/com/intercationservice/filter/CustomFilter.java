@@ -17,7 +17,7 @@ public class CustomFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String username = request.getParameter("X-Username");
+        String username = request.getParameter("Authorization");
 
         if (username == null) {
             filterChain.doFilter(request, response);
