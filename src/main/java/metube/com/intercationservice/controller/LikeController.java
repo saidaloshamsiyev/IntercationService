@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/like")
+@RequestMapping("api/like")
 @RequiredArgsConstructor
 public class LikeController {
     private final LikeService likeService;
