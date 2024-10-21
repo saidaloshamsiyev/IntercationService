@@ -11,13 +11,15 @@ import metube.com.intercationservice.repository.CommitRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CommitServiceImpl implements CommitService {
+public class CommitServiceImpl implements CommitService{
+
+
     private final CommitRepository commitRepository;
     private final VideoServiceClient videoServiceClient;
     @Override
@@ -35,13 +37,7 @@ public class CommitServiceImpl implements CommitService {
                 .build();
         CommitEntity save = commitRepository.save(build);
 
-        return CommitRes.builder()
-                        .id(save.getId())
-                                .userId(save.getUserId())
-                                        .comment(save.getComment())
-                                                .videoId(save.getVideoId())
-                                                        .likes(save.getLikes())
-                .build();
+        return mapToCommitRes(save);
     }
 
     @Override
@@ -55,19 +51,9 @@ public class CommitServiceImpl implements CommitService {
             throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
         }
 
-        return CommitRes.builder()
-                .id(commit.getId())
-                .userId(commit.getUserId())
-                .comment(commit.getComment())
-                .videoId(commit.getVideoId())
-                .likes(commit.getLikes())
-                .build();
+        return mapToCommitRes(commit);
     }
 
-    @Override
-    public List<CommitRes> findAll() {
-        return commitRepository.findAllBy();
-    }
 
     @Override
     public void updateCommit(UUID id, CommitReq commitReq) {
@@ -96,5 +82,33 @@ public class CommitServiceImpl implements CommitService {
         }
 
         commitRepository.deleteById(id);
+    }
+
+    @Override
+    public List<CommitRes> findByAllCommitsVideoId(UUID videoId) {
+
+        //vedio tekshirish
+        VideoResponse videoResponse = videoServiceClient.getVideo(videoId);
+        if (videoResponse == null) {
+            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+        }
+
+
+        List<CommitEntity> commits = commitRepository.findAllByVideoId(videoId);
+
+        return commits.stream()
+                .map(this::mapToCommitRes)
+                .collect(Collectors.toList());
+    }
+
+
+
+    // map qilish u-n kk
+    private CommitRes mapToCommitRes(CommitEntity commitEntity) {
+        CommitRes commitRes = new CommitRes();
+        commitRes.setComment(commitEntity.getComment());
+        commitRes.setVideoId(commitEntity.getVideoId());
+        commitRes.setLikes(commitEntity.getLikes());
+        return commitRes;
     }
 }

@@ -10,7 +10,6 @@ import java.util.UUID;
 @Setter
 @Builder
 public class LikeRes {
-    private UUID id;
     private UUID userId;
     private UUID videoId;
 }

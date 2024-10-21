@@ -9,6 +9,6 @@ import java.util.UUID;
 public interface HistoryService {
     HistoryRes createHistory(HistoryReq historyReq);
     HistoryRes findHistoryById(UUID id);
-    List<HistoryRes> findAllHistory();
     HistoryRes deleteHistory(UUID id);
+    List<HistoryRes> findAllHistoryByUserId(UUID userId);
 }

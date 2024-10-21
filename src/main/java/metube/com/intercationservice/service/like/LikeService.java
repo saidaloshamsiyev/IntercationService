@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface LikeService {
     LikeRes create(LIkeReq lIkeReq);
-    LikeEntity findById(UUID id);
-    List<LikeRes> findAll();
+    LikeRes findById(UUID id);
     void delete(UUID id);
+    List<LikeRes> findAllByVideoId(UUID videoId);
 }

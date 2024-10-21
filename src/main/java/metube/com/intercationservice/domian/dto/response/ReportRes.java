@@ -11,7 +11,6 @@ import java.util.UUID;
 @Setter
 @Builder
 public class ReportRes {
-    private UUID id;
     private UUID userId;
     private ReportType type;
     private UUID videoId;

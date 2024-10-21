@@ -13,5 +13,5 @@ import java.util.UUID;
 public interface HistoryRepository extends JpaRepository<HistoryEntity, UUID> {
     Optional<HistoryEntity> findByUserIdAndVideoId(UUID userId, UUID videoId);
 
-    List<HistoryRes> findAllBy();
+    List<HistoryEntity> findAllByUserId(UUID userId);
 }

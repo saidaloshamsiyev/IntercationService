@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,12 +36,7 @@ public class ReportServiceImpl implements ReportService{
                 .type(reportReq.getType())
                 .build();
         ReportEntity save = reportRepository.save(build);
-        return ReportRes.builder()
-                .id(save.getId())
-                .userId(save.getUserId())
-                .videoId(save.getVideoId())
-                .type(save.getType())
-                .build();
+        return mapToReportRes(save);
     }
 
     @Override
@@ -58,7 +54,27 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public List<ReportRes> findAllReports() {
-        return reportRepository.findAllBy();
+    public List<ReportRes> findAllByRepostsByVideoId(UUID videoId) {
+        //vedio tekshirish
+        VideoResponse videoResponse = videoServiceClient.getVideo(videoId);
+        if (videoResponse == null) {
+            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+        }
+
+        List<ReportEntity> list = reportRepository.findAllByVideoId(videoId);
+        return list.stream()
+                .map(this::mapToReportRes)
+                .collect(Collectors.toList());
     }
+
+
+
+    private ReportRes mapToReportRes(ReportEntity reportEntity) {
+        ReportRes reportRes = new ReportRes();
+        reportRes.setUserId(reportEntity.getUserId());
+        reportRes.setVideoId(reportEntity.getVideoId());
+        reportRes.setType(reportEntity.getType());
+        return reportRes;
+    }
+
 }

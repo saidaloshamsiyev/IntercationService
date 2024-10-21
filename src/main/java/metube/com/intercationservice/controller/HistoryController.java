@@ -11,30 +11,29 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/history")
+@RequestMapping("api/history")
 @RequiredArgsConstructor
 public class HistoryController {
     private final HistoryService historyService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<HistoryRes> create(@RequestBody HistoryReq history) {
         HistoryRes history1 = historyService.createHistory(history);
         return ResponseEntity.ok(history1);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/findById{id}")
     public ResponseEntity<HistoryRes> findById(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(historyService.findHistoryById(id));
     }
 
-
-    @GetMapping
-    public ResponseEntity<List<HistoryRes>> findAll() {
-        return ResponseEntity.ok(historyService.findAllHistory());
+    @GetMapping("/findAllHistoryByUserId{id}")
+    public ResponseEntity<List<HistoryRes>> findAllHistoryByUserId(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(historyService.findAllHistoryByUserId(id));
     }
 
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/delete{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         historyService.deleteHistory(id);
         return ResponseEntity.noContent().build();

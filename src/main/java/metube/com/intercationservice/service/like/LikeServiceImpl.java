@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,15 +39,11 @@ public class LikeServiceImpl implements LikeService {
                 .videoId(lIkeReq.getVideoId())
                 .build();
         LikeEntity save = likeRepository.save(build);
-        return LikeRes.builder()
-                .id(save.getId())
-                .userId(save.getUserId())
-                .videoId(save.getVideoId())
-                .build();
+        return mapToLikeRes(save);
     }
 
     @Override
-    public LikeEntity findById(UUID id) {
+    public LikeRes findById(UUID id) {
         LikeEntity like = likeRepository.findById(id)
                 .orElseThrow(() -> new BaseException("You have not pushed like", HttpStatus.NOT_FOUND.value()));
 
@@ -56,13 +53,9 @@ public class LikeServiceImpl implements LikeService {
             throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
         }
 
-        return like;
+        return mapToLikeRes(like);
     }
 
-    @Override
-    public List<LikeRes> findAll() {
-        return likeRepository.findAllBy();
-    }
 
     @Override
     public void delete(UUID id) {
@@ -75,5 +68,29 @@ public class LikeServiceImpl implements LikeService {
         }
 
         likeRepository.deleteById(id);
+    }
+
+    @Override
+    public List<LikeRes> findAllByVideoId(UUID videoId) {
+        //vedio tekshirish
+        VideoResponse videoResponse = videoServiceClient.getVideo(videoId);
+        if (videoResponse == null) {
+            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+        }
+
+
+        List<LikeEntity> list = likeRepository.findAllByVideoId(videoId);
+
+        return list.stream()
+                .map(this::mapToLikeRes)
+                .collect(Collectors.toList());
+    }
+
+
+    private LikeRes mapToLikeRes(LikeEntity likeEntity) {
+        LikeRes likeRes = new LikeRes();
+        likeRes.setUserId(likeEntity.getUserId());
+        likeRes.setVideoId(likeEntity.getVideoId());
+        return likeRes;
     }
 }
