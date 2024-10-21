@@ -59,7 +59,7 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public void delete(UUID id) {
-        LikeEntity byId = findById(id);
+        LikeRes byId = findById(id);
 
         //vedio tekshirish
         VideoResponse videoResponse = videoServiceClient.getVideo(byId.getVideoId());
