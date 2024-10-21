@@ -1,5 +1,6 @@
 package metube.com.intercationservice.controller;
 
+import lombok.RequiredArgsConstructor;
 import metube.com.intercationservice.domian.dto.request.HistoryReq;
 import metube.com.intercationservice.domian.dto.response.HistoryRes;
 import metube.com.intercationservice.service.history.HistoryService;
@@ -11,8 +12,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/history")
+@RequiredArgsConstructor
 public class HistoryController {
-    private HistoryService historyService;
+    private final HistoryService historyService;
 
     @PostMapping
     public ResponseEntity<HistoryRes> create(@RequestBody HistoryReq history) {

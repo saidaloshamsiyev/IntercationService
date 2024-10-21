@@ -1,5 +1,6 @@
 package metube.com.intercationservice.controller;
 
+import lombok.RequiredArgsConstructor;
 import metube.com.intercationservice.domian.dto.request.LIkeReq;
 import metube.com.intercationservice.domian.dto.response.LikeRes;
 import metube.com.intercationservice.domian.entity.LikeEntity;
@@ -12,8 +13,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/like")
+@RequiredArgsConstructor
 public class LikeController {
-    private LikeService likeService;
+    private final LikeService likeService;
 
     @PostMapping
     public ResponseEntity<LikeRes> create(@RequestBody LIkeReq like) {

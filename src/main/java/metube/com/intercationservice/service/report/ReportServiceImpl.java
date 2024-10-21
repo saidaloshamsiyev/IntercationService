@@ -1,8 +1,10 @@
 package metube.com.intercationservice.service.report;
 
 import lombok.RequiredArgsConstructor;
+import metube.com.intercationservice.clients.VideoServiceClient;
 import metube.com.intercationservice.domian.dto.request.ReportReq;
 import metube.com.intercationservice.domian.dto.response.ReportRes;
+import metube.com.intercationservice.domian.dto.response.VideoResponse;
 import metube.com.intercationservice.domian.entity.ReportEntity;
 import metube.com.intercationservice.exception.BaseException;
 import metube.com.intercationservice.repository.ReportRepository;
@@ -16,9 +18,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService{
     private final ReportRepository reportRepository;
+    private final VideoServiceClient videoServiceClient;
 
     @Override
     public ReportRes createReport(ReportReq reportReq) {
+
+        //vedio tekshirish
+        VideoResponse videoResponse = videoServiceClient.getVideo(reportReq.getVideoId());
+        if (videoResponse == null) {
+            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+        }
+
         ReportEntity build = ReportEntity.builder()
                 .userId(reportReq.getUserId())
                 .videoId(reportReq.getVideoId())
@@ -35,8 +45,16 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     public ReportEntity findReportById(UUID id) {
-        return reportRepository.findById(id)
+        ReportEntity reportNotFound = reportRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Report not found", HttpStatus.NOT_FOUND.value()));
+
+        //vedio tekshirish
+        VideoResponse videoResponse = videoServiceClient.getVideo(reportNotFound.getVideoId());
+        if (videoResponse == null) {
+            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+        }
+
+        return reportNotFound;
     }
 
     @Override
