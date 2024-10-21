@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/commit")
+@RequestMapping("api/commit")
 @RequiredArgsConstructor
 public class CommitController {
     private final CommitServiceImpl commitService;
@@ -22,25 +22,24 @@ public class CommitController {
         return ResponseEntity.ok(commitRes);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/findById{id}")
     public ResponseEntity<CommitRes> findById(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(commitService.findById(id));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/update{id}")
     public ResponseEntity<Void> update(@PathVariable("id") UUID id, @RequestBody CommitReq commitReq) {
         commitService.updateCommit(id, commitReq);
         return ResponseEntity.noContent().build();
     }
 
 
-    @GetMapping
-    public ResponseEntity<List<CommitRes>> findAll() {
-        return ResponseEntity.ok(commitService.findAll());
+    @GetMapping("/findByAllCommitsVideoId{id}")
+    public ResponseEntity<List<CommitRes>> findByAllCommitsVideoId(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(commitService.findByAllCommitsVideoId(id));
     }
 
-
-    @DeleteMapping("{id}")
+    @DeleteMapping("/delete{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         commitService.deleteCommit(id);
         return ResponseEntity.noContent().build();

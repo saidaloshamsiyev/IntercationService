@@ -12,27 +12,26 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/report")
+@RequestMapping("api/report")
 @RequiredArgsConstructor
 public class ReportController {
 
     private final ReportService reportService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ReportRes> create(@RequestBody ReportReq report) {
         ReportRes report1 = reportService.createReport(report);
         return ResponseEntity.ok(report1);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/findById{id}")
     public ResponseEntity<ReportEntity> findById(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(reportService.findReportById(id));
     }
 
 
-    @GetMapping
-    public ResponseEntity<List<ReportRes>> findAll() {
-        return ResponseEntity.ok(reportService.findAllReports());
+    @GetMapping("/findAllByRepostsByVideoId{id}")
+    public ResponseEntity<List<ReportRes>> findAllByRepostsByVideoId(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(reportService.findAllByRepostsByVideoId(id));
     }
-
 }

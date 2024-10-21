@@ -13,5 +13,5 @@ import java.util.UUID;
 public interface LikeRepository extends JpaRepository<LikeEntity, UUID> {
     Optional<LikeEntity> findByUserIdAndVideoId(UUID userId, UUID videoId);
 
-    List<LikeRes> findAllBy();
+    List<LikeEntity> findAllByVideoId(UUID videoId);
 }

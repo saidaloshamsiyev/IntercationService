@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,12 +45,7 @@ public class HistoryServiceImpl implements HistoryService {
 
         HistoryEntity save = historyRepository.save(newHistory);
 
-        return HistoryRes.builder()
-                .id(save.getId())
-                .userId(save.getUserId())
-                .videoId(save.getVideoId())
-                .watchedTime(save.getWatchedTime())
-                .build();
+        return mapToHistoryRes(save);
     }
 
 
@@ -68,18 +64,9 @@ public class HistoryServiceImpl implements HistoryService {
             throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
         }
 
-         return HistoryRes.builder()
-                 .id(history.getId())
-                 .userId(history.getUserId())
-                 .videoId(history.getVideoId())
-                 .watchedTime(history.getWatchedTime())
-                 .build();
+         return mapToHistoryRes(history);
     }
 
-    @Override
-    public List<HistoryRes> findAllHistory() {
-        return historyRepository.findAllBy();
-    }
 
 
     @Override
@@ -94,5 +81,24 @@ public class HistoryServiceImpl implements HistoryService {
 
         historyRepository.deleteById(id);
         return historyById;
+    }
+
+    @Override
+    public List<HistoryRes> findAllHistoryByUserId(UUID userId) {
+        List<HistoryEntity> list = historyRepository.findAllByUserId(userId);
+
+        return list.stream()
+                .map(this::mapToHistoryRes)
+                .collect(Collectors.toList());
+    }
+
+
+    private HistoryRes mapToHistoryRes(HistoryEntity historyEntity) {
+        HistoryRes historyRes = new HistoryRes();
+
+        historyRes.setUserId(historyEntity.getUserId());
+        historyRes.setVideoId(historyEntity.getVideoId());
+        historyRes.setWatchedTime(historyEntity.getWatchedTime());
+        return historyRes;
     }
 }

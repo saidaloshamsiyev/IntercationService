@@ -17,25 +17,25 @@ import java.util.UUID;
 public class LikeController {
     private final LikeService likeService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<LikeRes> create(@RequestBody LIkeReq like) {
         LikeRes like1 = likeService.create(like);
         return ResponseEntity.ok(like1);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<LikeEntity> findById(@PathVariable("id") UUID id) {
+    @GetMapping("/findById{id}")
+    public ResponseEntity<LikeRes> findById(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(likeService.findById(id));
     }
 
 
-    @GetMapping
-    public ResponseEntity<List<LikeRes>> findAll() {
-        return ResponseEntity.ok(likeService.findAll());
+    @GetMapping("/findAllLikeByVideoId{id}")
+    public ResponseEntity<List<LikeRes>> findAllLikeByVideoId(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(likeService.findAllByVideoId(id));
     }
 
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/delete{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         likeService.delete(id);
         return ResponseEntity.noContent().build();

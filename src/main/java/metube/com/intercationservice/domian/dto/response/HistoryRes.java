@@ -11,7 +11,6 @@ import java.util.UUID;
 @Setter
 @Builder
 public class HistoryRes {
-    private UUID id;
     private UUID userId;
     private UUID videoId;
     private LocalDateTime watchedTime;
