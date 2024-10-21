@@ -25,6 +25,6 @@ eureka:
     preferIpAddress: true
 springdoc:
   swagger-ui:
-    path: /api/like/swagger-ui
+    path: /api/interaction/swagger-ui
   api-docs:
-    path: /api/like/v3/api-docs
+    path: /api/interaction/v3/api-docs
