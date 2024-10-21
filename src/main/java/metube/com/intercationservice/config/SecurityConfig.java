@@ -28,7 +28,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(WHITE_LIST).permitAll()
-                                .requestMatchers(HttpMethod.POST, "/commit/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "api/commit/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "api/history/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "api/like/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "api/report/**").authenticated()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(new CustomFilter(),
