@@ -28,10 +28,26 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(WHITE_LIST).permitAll()
-                                .requestMatchers(HttpMethod.POST, "api/commit/**").authenticated()
-                                .requestMatchers(HttpMethod.POST, "api/history/**").authenticated()
-                                .requestMatchers(HttpMethod.POST, "api/like/**").authenticated()
-                                .requestMatchers(HttpMethod.POST, "api/report/**").authenticated()
+
+                                .requestMatchers(HttpMethod.GET, "/api/commit/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/commit/**").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/api/commit/**").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/api/commit/**").authenticated()
+
+                                .requestMatchers(HttpMethod.GET, "/api/history/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/history/**").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/api/history/**").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/api/history/**").authenticated()
+
+                                .requestMatchers(HttpMethod.GET, "/api/like/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/like/**").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/api/like/**").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/api/like/**").authenticated()
+
+                                .requestMatchers(HttpMethod.GET, "/api/report/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/report/**").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/api/report/**").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/api/report/**").authenticated()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(new CustomFilter(),
