@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface CommitService {
     CommitRes createCommit(CommitReq commitReq);
     CommitRes findById(UUID id);
-    void updateCommit(UUID id, CommitReq commitReq);
+    void updateCommit(UUID id, String commitReq);
     void deleteCommit(UUID id);
     List<CommitRes> findByAllCommitsVideoId(UUID videoId);
 }

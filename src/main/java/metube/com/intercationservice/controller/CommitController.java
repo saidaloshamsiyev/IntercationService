@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/commit")
+@RequestMapping("/api/commit")
 @RequiredArgsConstructor
 public class CommitController {
     private final CommitServiceImpl commitService;
@@ -28,8 +28,8 @@ public class CommitController {
     }
 
     @PutMapping("/update{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") UUID id, @RequestBody CommitReq commitReq) {
-        commitService.updateCommit(id, commitReq);
+    public ResponseEntity<Void> update(@PathVariable("id") UUID id, @RequestParam("commit") String commit) {
+        commitService.updateCommit(id, commit);
         return ResponseEntity.noContent().build();
     }
 
