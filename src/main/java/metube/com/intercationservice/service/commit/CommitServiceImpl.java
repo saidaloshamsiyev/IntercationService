@@ -56,7 +56,7 @@ public class CommitServiceImpl implements CommitService{
 
 
     @Override
-    public void updateCommit(UUID id, CommitReq commitReq) {
+    public void updateCommit(UUID id, String commitStr) {
         CommitEntity commit = commitRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Commit not found", HttpStatus.NOT_FOUND.value()));
 
@@ -66,7 +66,8 @@ public class CommitServiceImpl implements CommitService{
 //            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
 //        }
 
-        commit.setComment(commitReq.getComment());
+
+        commit.setComment(commitStr);
 
         commitRepository.save(commit);
     }
@@ -106,6 +107,7 @@ public class CommitServiceImpl implements CommitService{
     // map qilish u-n kk
     private CommitRes mapToCommitRes(CommitEntity commitEntity) {
         CommitRes commitRes = new CommitRes();
+        commitRes.setUserId(commitEntity.getUserId());
         commitRes.setComment(commitEntity.getComment());
         commitRes.setVideoId(commitEntity.getVideoId());
         commitRes.setLikes(commitEntity.getLikes());
