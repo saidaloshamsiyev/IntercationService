@@ -25,10 +25,10 @@ public class CommitServiceImpl implements CommitService{
     @Override
     public CommitRes createCommit(CommitReq commitReq) {
 
-        VideoResponse videoResponse = videoServiceClient.getVideo(commitReq.getVideoId());
-        if (videoResponse == null) {
-            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-        }
+//        VideoResponse videoResponse = videoServiceClient.getVideo(commitReq.getVideoId());
+//        if (videoResponse == null) {
+//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+//        }
 
         CommitEntity build = CommitEntity.builder()
                 .userId(commitReq.getUserId())
@@ -45,11 +45,11 @@ public class CommitServiceImpl implements CommitService{
         CommitEntity commit = commitRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Commit not found", HttpStatus.NOT_FOUND.value()));
 
-        //vedio tekshirish
-        VideoResponse videoResponse = videoServiceClient.getVideo(commit.getVideoId());
-        if (videoResponse == null) {
-            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-        }
+//        //vedio tekshirish
+//        VideoResponse videoResponse = videoServiceClient.getVideo(commit.getVideoId());
+//        if (videoResponse == null) {
+//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+//        }
 
         return mapToCommitRes(commit);
     }
@@ -60,11 +60,11 @@ public class CommitServiceImpl implements CommitService{
         CommitEntity commit = commitRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Commit not found", HttpStatus.NOT_FOUND.value()));
 
-        //vedio tekshirish
-        VideoResponse videoResponse = videoServiceClient.getVideo(commit.getVideoId());
-        if (videoResponse == null) {
-            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-        }
+//        //vedio tekshirish
+//        VideoResponse videoResponse = videoServiceClient.getVideo(commit.getVideoId());
+//        if (videoResponse == null) {
+//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+//        }
 
         commit.setComment(commitReq.getComment());
 
@@ -75,11 +75,11 @@ public class CommitServiceImpl implements CommitService{
     public void deleteCommit(UUID id) {
         CommitRes byId = findById(id);
 
-        //vedio tekshirish
-        VideoResponse videoResponse = videoServiceClient.getVideo(byId.getVideoId());
-        if (videoResponse == null) {
-            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-        }
+//        //vedio tekshirish
+//        VideoResponse videoResponse = videoServiceClient.getVideo(byId.getVideoId());
+//        if (videoResponse == null) {
+//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+//        }
 
         commitRepository.deleteById(id);
     }
@@ -87,11 +87,11 @@ public class CommitServiceImpl implements CommitService{
     @Override
     public List<CommitRes> findByAllCommitsVideoId(UUID videoId) {
 
-        //vedio tekshirish
-        VideoResponse videoResponse = videoServiceClient.getVideo(videoId);
-        if (videoResponse == null) {
-            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-        }
+//        //vedio tekshirish
+//        VideoResponse videoResponse = videoServiceClient.getVideo(videoId);
+//        if (videoResponse == null) {
+//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+//        }
 
 
         List<CommitEntity> commits = commitRepository.findAllByVideoId(videoId);
