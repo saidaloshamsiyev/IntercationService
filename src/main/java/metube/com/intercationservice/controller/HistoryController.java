@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/history")
+@RequestMapping("/api/history")
 @RequiredArgsConstructor
 public class HistoryController {
     private final HistoryService historyService;
