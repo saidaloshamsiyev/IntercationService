@@ -24,11 +24,8 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public HistoryRes createHistory(HistoryReq historyReq) {
-//        //vedio tekshirish
-//        VideoResponse videoResponse = videoServiceClient.getVideo(historyReq.getVideoId());
-//        if (videoResponse == null) {
-//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-//        }
+
+        checkVideoId(historyReq.getVideoId());
 
         // Agar foydalanuvchi bu videoni oldin ko'rgan bo'lsa, exception tashlash
         historyRepository.findByUserIdAndVideoId(historyReq.getUserId(), historyReq.getVideoId())
@@ -58,11 +55,7 @@ public class HistoryServiceImpl implements HistoryService {
         HistoryEntity history = historyRepository.findById(id)
                 .orElseThrow(() -> new BaseException("History not found", HttpStatus.NOT_FOUND.value()));
 
-//        //vedio tekshirish
-//        VideoResponse videoResponse = videoServiceClient.getVideo(history.getVideoId());
-//        if (videoResponse == null) {
-//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-//        }
+        checkVideoId(history.getVideoId());
 
          return mapToHistoryRes(history);
     }
@@ -73,11 +66,7 @@ public class HistoryServiceImpl implements HistoryService {
     public HistoryRes deleteHistory(UUID id) {
         HistoryRes historyById = findHistoryById(id);
 
-//        //vedio tekshirish
-//        VideoResponse videoResponse = videoServiceClient.getVideo(historyById.getVideoId());
-//        if (videoResponse == null) {
-//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-//        }
+        checkVideoId(historyById.getVideoId());
 
         historyRepository.deleteById(id);
         return historyById;
@@ -100,5 +89,12 @@ public class HistoryServiceImpl implements HistoryService {
         historyRes.setVideoId(historyEntity.getVideoId());
         historyRes.setWatchedTime(historyEntity.getWatchedTime());
         return historyRes;
+    }
+
+    private void checkVideoId(UUID videoId) {
+        VideoResponse videoResponse = videoServiceClient.getVideo(videoId);
+        if (videoResponse == null) {
+            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+        }
     }
 }
