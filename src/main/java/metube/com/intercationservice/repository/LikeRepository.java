@@ -14,4 +14,6 @@ public interface LikeRepository extends JpaRepository<LikeEntity, UUID> {
     Optional<LikeEntity> findByUserIdAndVideoId(UUID userId, UUID videoId);
 
     List<LikeEntity> findAllByVideoId(UUID videoId);
+
+    List<LikeEntity> findAllByUserId(UUID userId);
 }

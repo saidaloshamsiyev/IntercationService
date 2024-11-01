@@ -11,6 +11,7 @@ import metube.com.intercationservice.repository.LikeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -24,11 +25,11 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public LikeRes create(LIkeReq lIkeReq) {
 
-        //vedio tekshirish
-        VideoResponse videoResponse = videoServiceClient.getVideo(lIkeReq.getVideoId());
-        if (videoResponse == null) {
-            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-        }
+//        //vedio tekshirish
+//        VideoResponse videoResponse = videoServiceClient.getVideo(lIkeReq.getVideoId());
+//        if (videoResponse == null) {
+//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+//        }
 
         likeRepository.findByUserIdAndVideoId(lIkeReq.getUserId(), lIkeReq.getVideoId())
                 .ifPresent(history -> {
@@ -47,11 +48,11 @@ public class LikeServiceImpl implements LikeService {
         LikeEntity like = likeRepository.findById(id)
                 .orElseThrow(() -> new BaseException("You have not pushed like", HttpStatus.NOT_FOUND.value()));
 
-        //vedio tekshirish
-        VideoResponse videoResponse = videoServiceClient.getVideo(like.getVideoId());
-        if (videoResponse == null) {
-            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-        }
+//        //vedio tekshirish
+//        VideoResponse videoResponse = videoServiceClient.getVideo(like.getVideoId());
+//        if (videoResponse == null) {
+//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+//        }
 
         return mapToLikeRes(like);
     }
@@ -61,22 +62,22 @@ public class LikeServiceImpl implements LikeService {
     public void delete(UUID id) {
         LikeRes byId = findById(id);
 
-        //vedio tekshirish
-        VideoResponse videoResponse = videoServiceClient.getVideo(byId.getVideoId());
-        if (videoResponse == null) {
-            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-        }
+//        //vedio tekshirish
+//        VideoResponse videoResponse = videoServiceClient.getVideo(byId.getVideoId());
+//        if (videoResponse == null) {
+//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+//        }
 
         likeRepository.deleteById(id);
     }
 
     @Override
     public List<LikeRes> findAllByVideoId(UUID videoId) {
-        //vedio tekshirish
-        VideoResponse videoResponse = videoServiceClient.getVideo(videoId);
-        if (videoResponse == null) {
-            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-        }
+//        //vedio tekshirish
+//        VideoResponse videoResponse = videoServiceClient.getVideo(videoId);
+//        if (videoResponse == null) {
+//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+//        }
 
 
         List<LikeEntity> list = likeRepository.findAllByVideoId(videoId);
@@ -84,6 +85,17 @@ public class LikeServiceImpl implements LikeService {
         return list.stream()
                 .map(this::mapToLikeRes)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UUID> youLikeVideos(UUID userId) {
+        List<LikeEntity> list = likeRepository.findAllByUserId(userId);
+        List<UUID> videoIds = new ArrayList<>();
+
+        for (LikeEntity likeEntity : list) {
+            videoIds.add(likeEntity.getVideoId());
+        }
+        return videoIds;
     }
 
 

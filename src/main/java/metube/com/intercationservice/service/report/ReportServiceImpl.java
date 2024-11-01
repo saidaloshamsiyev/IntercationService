@@ -24,11 +24,11 @@ public class ReportServiceImpl implements ReportService{
     @Override
     public ReportRes createReport(ReportReq reportReq) {
 
-        //vedio tekshirish
-        VideoResponse videoResponse = videoServiceClient.getVideo(reportReq.getVideoId());
-        if (videoResponse == null) {
-            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-        }
+//        //vedio tekshirish
+//        VideoResponse videoResponse = videoServiceClient.getVideo(reportReq.getVideoId());
+//        if (videoResponse == null) {
+//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+//        }
 
         ReportEntity build = ReportEntity.builder()
                 .userId(reportReq.getUserId())
@@ -44,22 +44,22 @@ public class ReportServiceImpl implements ReportService{
         ReportEntity reportNotFound = reportRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Report not found", HttpStatus.NOT_FOUND.value()));
 
-        //vedio tekshirish
-        VideoResponse videoResponse = videoServiceClient.getVideo(reportNotFound.getVideoId());
-        if (videoResponse == null) {
-            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-        }
+//        //vedio tekshirish
+//        VideoResponse videoResponse = videoServiceClient.getVideo(reportNotFound.getVideoId());
+//        if (videoResponse == null) {
+//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+//        }
 
         return reportNotFound;
     }
 
     @Override
     public List<ReportRes> findAllByRepostsByVideoId(UUID videoId) {
-        //vedio tekshirish
-        VideoResponse videoResponse = videoServiceClient.getVideo(videoId);
-        if (videoResponse == null) {
-            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-        }
+//        //vedio tekshirish
+//        VideoResponse videoResponse = videoServiceClient.getVideo(videoId);
+//        if (videoResponse == null) {
+//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+//        }
 
         List<ReportEntity> list = reportRepository.findAllByVideoId(videoId);
         return list.stream()
