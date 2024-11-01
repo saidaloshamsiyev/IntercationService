@@ -22,24 +22,24 @@ public class CommitController {
         return ResponseEntity.ok(commitRes);
     }
 
-    @GetMapping("/findById{id}")
+    @GetMapping("/findById/{id}")
     public ResponseEntity<CommitRes> findById(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(commitService.findById(id));
     }
 
-    @PutMapping("/update{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Void> update(@PathVariable("id") UUID id, @RequestParam("commit") String commit) {
         commitService.updateCommit(id, commit);
         return ResponseEntity.noContent().build();
     }
 
 
-    @GetMapping("/findByAllCommitsVideoId{id}")
+    @GetMapping("/findByAllCommitsVideoId/{id}")
     public ResponseEntity<List<CommitRes>> findByAllCommitsVideoId(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(commitService.findByAllCommitsVideoId(id));
     }
 
-    @DeleteMapping("/delete{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         commitService.deleteCommit(id);
         return ResponseEntity.noContent().build();

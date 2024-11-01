@@ -23,19 +23,19 @@ public class LikeController {
         return ResponseEntity.ok(like1);
     }
 
-    @GetMapping("/findById{id}")
+    @GetMapping("/findById/{id}")
     public ResponseEntity<LikeRes> findById(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(likeService.findById(id));
     }
 
 
-    @GetMapping("/findAllLikeByVideoId{id}")
+    @GetMapping("/findAllLikeByVideoId/{id}")
     public ResponseEntity<List<LikeRes>> findAllLikeByVideoId(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(likeService.findAllByVideoId(id));
     }
 
 
-    @DeleteMapping("/delete{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         likeService.delete(id);
         return ResponseEntity.noContent().build();
