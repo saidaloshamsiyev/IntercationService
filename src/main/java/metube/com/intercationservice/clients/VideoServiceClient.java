@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @FeignClient(name = "VIDEO-SERVICE",configuration = FeignConfig.class)
 public interface VideoServiceClient {
-    @GetMapping("/api/video/{videoId}")
-    VideoResponse getVideo(@PathVariable UUID id);
+    @GetMapping("/api/video/finById/{videoId}")
+    VideoResponse getVideo(@PathVariable("videoId") UUID id);
 }
