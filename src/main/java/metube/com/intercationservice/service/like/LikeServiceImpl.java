@@ -25,11 +25,7 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public LikeRes create(LIkeReq lIkeReq) {
 
-//        //vedio tekshirish
-//        VideoResponse videoResponse = videoServiceClient.getVideo(lIkeReq.getVideoId());
-//        if (videoResponse == null) {
-//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-//        }
+        checkVideoId(lIkeReq.getVideoId());
 
         likeRepository.findByUserIdAndVideoId(lIkeReq.getUserId(), lIkeReq.getVideoId())
                 .ifPresent(history -> {
@@ -48,11 +44,7 @@ public class LikeServiceImpl implements LikeService {
         LikeEntity like = likeRepository.findById(id)
                 .orElseThrow(() -> new BaseException("You have not pushed like", HttpStatus.NOT_FOUND.value()));
 
-//        //vedio tekshirish
-//        VideoResponse videoResponse = videoServiceClient.getVideo(like.getVideoId());
-//        if (videoResponse == null) {
-//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-//        }
+        checkVideoId(like.getVideoId());
 
         return mapToLikeRes(like);
     }
@@ -62,23 +54,15 @@ public class LikeServiceImpl implements LikeService {
     public void delete(UUID id) {
         LikeRes byId = findById(id);
 
-//        //vedio tekshirish
-//        VideoResponse videoResponse = videoServiceClient.getVideo(byId.getVideoId());
-//        if (videoResponse == null) {
-//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-//        }
+        checkVideoId(byId.getVideoId());
 
         likeRepository.deleteById(id);
     }
 
     @Override
     public List<LikeRes> findAllByVideoId(UUID videoId) {
-//        //vedio tekshirish
-//        VideoResponse videoResponse = videoServiceClient.getVideo(videoId);
-//        if (videoResponse == null) {
-//            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
-//        }
 
+        checkVideoId(videoId);
 
         List<LikeEntity> list = likeRepository.findAllByVideoId(videoId);
 
@@ -104,5 +88,12 @@ public class LikeServiceImpl implements LikeService {
         likeRes.setUserId(likeEntity.getUserId());
         likeRes.setVideoId(likeEntity.getVideoId());
         return likeRes;
+    }
+
+    private void checkVideoId(UUID videoId) {
+        VideoResponse videoResponse = videoServiceClient.getVideo(videoId);
+        if (videoResponse == null) {
+            throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
+        }
     }
 }
