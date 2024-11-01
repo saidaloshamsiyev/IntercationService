@@ -3,6 +3,7 @@ package metube.com.intercationservice.controller;
 import lombok.RequiredArgsConstructor;
 import metube.com.intercationservice.domian.dto.request.LIkeReq;
 import metube.com.intercationservice.domian.dto.response.LikeRes;
+import metube.com.intercationservice.domian.dto.response.VideoResponse;
 import metube.com.intercationservice.domian.entity.LikeEntity;
 import metube.com.intercationservice.service.like.LikeService;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +40,11 @@ public class LikeController {
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         likeService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @GetMapping("/youLikeVideos/{id}")
+    public ResponseEntity<List<UUID>> youLikeVideos(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(likeService.youLikeVideos(id));
     }
 }
