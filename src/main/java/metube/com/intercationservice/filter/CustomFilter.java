@@ -19,17 +19,17 @@ public class CustomFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String username = request.getHeader("Authorization");
-        if (username==null || !username.startsWith("Bearer ")) {
+
+        if (username == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(username, null, null);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-        UsernamePasswordAuthenticationToken auth =
-                new UsernamePasswordAuthenticationToken
-                        (username, null, null);
-
-        SecurityContextHolder.getContext().setAuthentication(auth);
         filterChain.doFilter(request, response);
+
     }
 }
