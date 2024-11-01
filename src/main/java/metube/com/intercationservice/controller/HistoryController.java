@@ -22,18 +22,18 @@ public class HistoryController {
         return ResponseEntity.ok(history1);
     }
 
-    @GetMapping("/findById{id}")
+    @GetMapping("/findById/{id}")
     public ResponseEntity<HistoryRes> findById(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(historyService.findHistoryById(id));
     }
 
-    @GetMapping("/findAllHistoryByUserId{id}")
+    @GetMapping("/findAllHistoryByUserId/{id}")
     public ResponseEntity<List<HistoryRes>> findAllHistoryByUserId(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(historyService.findAllHistoryByUserId(id));
     }
 
 
-    @DeleteMapping("/delete{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         historyService.deleteHistory(id);
         return ResponseEntity.noContent().build();

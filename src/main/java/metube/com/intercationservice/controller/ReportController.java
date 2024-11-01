@@ -24,13 +24,13 @@ public class ReportController {
         return ResponseEntity.ok(report1);
     }
 
-    @GetMapping("/findById{id}")
+    @GetMapping("/findById/{id}")
     public ResponseEntity<ReportEntity> findById(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(reportService.findReportById(id));
     }
 
 
-    @GetMapping("/findAllByRepostsByVideoId{id}")
+    @GetMapping("/findAllByRepostsByVideoId/{id}")
     public ResponseEntity<List<ReportRes>> findAllByRepostsByVideoId(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(reportService.findAllByRepostsByVideoId(id));
     }
