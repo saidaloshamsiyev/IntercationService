@@ -44,13 +44,6 @@ public class LikeController {
     }
 
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
-        likeService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
-
-
     @GetMapping("/youLikeVideos/{id}")
     public ResponseEntity<List<UUID>> youLikeVideos(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(likeService.youLikeVideos(id));

@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 @Repository
 public interface LikeRepository extends JpaRepository<LikeEntity, UUID> {
-    Optional<LikeEntity> findByUserIdAndVideoId(UUID userId, UUID videoId);
+    LikeEntity findByUserIdAndVideoId(UUID userId, UUID videoId);
 
     List<LikeEntity> findAllByVideoId(UUID videoId);
 

@@ -12,7 +12,6 @@ public interface LikeService {
     LikeVideoRes createVideoLike(LIkeVideoReq lIkeVideoReq);
     LikeCommitRes createCommitLike(LikeCommitReq likeCommitReq);
     LikeVideoRes findById(UUID id);
-    void delete(UUID id);
     List<LikeVideoRes> findAllByVideoId(UUID videoId);
 
     List<UUID> youLikeVideos(UUID id);
