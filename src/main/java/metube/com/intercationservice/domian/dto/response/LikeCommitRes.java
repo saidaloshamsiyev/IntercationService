@@ -1,4 +1,4 @@
-package metube.com.intercationservice.domian.dto.request;
+package metube.com.intercationservice.domian.dto.response;
 
 import lombok.*;
 
@@ -8,7 +8,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LIkeReq {
+@Builder
+public class LikeCommitRes {
     private UUID userId;
-    private UUID videoId;
+    private UUID commitId;
 }

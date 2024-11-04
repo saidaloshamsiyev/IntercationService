@@ -1,7 +1,5 @@
 package metube.com.intercationservice.repository;
 
-import metube.com.intercationservice.domian.dto.response.LikeRes;
-import metube.com.intercationservice.domian.entity.HistoryEntity;
 import metube.com.intercationservice.domian.entity.LikeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

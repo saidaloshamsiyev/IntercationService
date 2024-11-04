@@ -9,7 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class LikeRes {
+public class LikeVideoRes {
     private UUID userId;
     private UUID videoId;
 }
