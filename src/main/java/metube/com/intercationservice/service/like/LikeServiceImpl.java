@@ -31,10 +31,12 @@ public class LikeServiceImpl implements LikeService {
 
         checkVideoId(lIkeVideoReq.getVideoId());
 
-        likeRepository.findByUserIdAndVideoId(lIkeVideoReq.getUserId(), lIkeVideoReq.getVideoId())
-                .ifPresent(history -> {
-                    throw new BaseException("You have already clicked like", HttpStatus.ALREADY_REPORTED.value());
-                });
+        LikeEntity like = likeRepository.findByUserIdAndVideoId(lIkeVideoReq.getUserId(), lIkeVideoReq.getVideoId());
+        if(like != null) {
+            delete(like.getId());
+            return mapToLikeRes(like);
+        }
+
         LikeEntity build = LikeEntity.builder()
                 .userId(lIkeVideoReq.getUserId())
                 .videoId(lIkeVideoReq.getVideoId())
@@ -48,10 +50,15 @@ public class LikeServiceImpl implements LikeService {
         commitService.findById(likeCommitReq.getCommitId());
 
 
-        likeRepository.findByUserIdAndVideoId(likeCommitReq.getUserId(), likeCommitReq.getCommitId())
-                .ifPresent(history -> {
-                    throw new BaseException("You have already clicked like", HttpStatus.ALREADY_REPORTED.value());
-                });
+        LikeEntity like = likeRepository.findByUserIdAndVideoId(likeCommitReq.getUserId(), likeCommitReq.getCommitId());
+        if(like != null) {
+            delete(like.getId());
+            return LikeCommitRes.builder()
+                    .commitId(like.getVideoId())
+                    .userId(like.getUserId())
+                    .build();
+        }
+
         LikeEntity build = LikeEntity.builder()
                 .userId(likeCommitReq.getUserId())
                 .videoId(likeCommitReq.getCommitId())
@@ -75,12 +82,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
 
-    @Override
-    public void delete(UUID id) {
-        LikeVideoRes byId = findById(id);
-
-        checkVideoId(byId.getVideoId());
-
+    private void delete(UUID id) {
         likeRepository.deleteById(id);
     }
 
