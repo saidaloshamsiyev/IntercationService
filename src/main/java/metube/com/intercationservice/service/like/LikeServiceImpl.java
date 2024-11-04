@@ -2,12 +2,15 @@ package metube.com.intercationservice.service.like;
 
 import lombok.RequiredArgsConstructor;
 import metube.com.intercationservice.clients.VideoServiceClient;
-import metube.com.intercationservice.domian.dto.request.LIkeReq;
-import metube.com.intercationservice.domian.dto.response.LikeRes;
+import metube.com.intercationservice.domian.dto.request.LIkeVideoReq;
+import metube.com.intercationservice.domian.dto.request.LikeCommitReq;
+import metube.com.intercationservice.domian.dto.response.LikeCommitRes;
+import metube.com.intercationservice.domian.dto.response.LikeVideoRes;
 import metube.com.intercationservice.domian.dto.response.VideoResponse;
 import metube.com.intercationservice.domian.entity.LikeEntity;
 import metube.com.intercationservice.exception.BaseException;
 import metube.com.intercationservice.repository.LikeRepository;
+import metube.com.intercationservice.service.commit.CommitServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -21,26 +24,48 @@ import java.util.stream.Collectors;
 public class LikeServiceImpl implements LikeService {
     private final LikeRepository likeRepository;
     private final VideoServiceClient videoServiceClient;
+    private final CommitServiceImpl commitService;
 
     @Override
-    public LikeRes create(LIkeReq lIkeReq) {
+    public LikeVideoRes createVideoLike(LIkeVideoReq lIkeVideoReq) {
 
-        checkVideoId(lIkeReq.getVideoId());
+        checkVideoId(lIkeVideoReq.getVideoId());
 
-        likeRepository.findByUserIdAndVideoId(lIkeReq.getUserId(), lIkeReq.getVideoId())
+        likeRepository.findByUserIdAndVideoId(lIkeVideoReq.getUserId(), lIkeVideoReq.getVideoId())
                 .ifPresent(history -> {
                     throw new BaseException("You have already clicked like", HttpStatus.ALREADY_REPORTED.value());
                 });
         LikeEntity build = LikeEntity.builder()
-                .userId(lIkeReq.getUserId())
-                .videoId(lIkeReq.getVideoId())
+                .userId(lIkeVideoReq.getUserId())
+                .videoId(lIkeVideoReq.getVideoId())
                 .build();
         LikeEntity save = likeRepository.save(build);
         return mapToLikeRes(save);
     }
 
     @Override
-    public LikeRes findById(UUID id) {
+    public LikeCommitRes createCommitLike(LikeCommitReq likeCommitReq) {
+        commitService.findById(likeCommitReq.getCommitId());
+
+
+        likeRepository.findByUserIdAndVideoId(likeCommitReq.getUserId(), likeCommitReq.getCommitId())
+                .ifPresent(history -> {
+                    throw new BaseException("You have already clicked like", HttpStatus.ALREADY_REPORTED.value());
+                });
+        LikeEntity build = LikeEntity.builder()
+                .userId(likeCommitReq.getUserId())
+                .videoId(likeCommitReq.getCommitId())
+                .build();
+        LikeEntity save = likeRepository.save(build);
+
+        return LikeCommitRes.builder()
+                .commitId(save.getId())
+                .userId(save.getUserId())
+                .build();
+    }
+
+    @Override
+    public LikeVideoRes findById(UUID id) {
         LikeEntity like = likeRepository.findById(id)
                 .orElseThrow(() -> new BaseException("You have not pushed like", HttpStatus.NOT_FOUND.value()));
 
@@ -52,7 +77,7 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public void delete(UUID id) {
-        LikeRes byId = findById(id);
+        LikeVideoRes byId = findById(id);
 
         checkVideoId(byId.getVideoId());
 
@@ -60,7 +85,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public List<LikeRes> findAllByVideoId(UUID videoId) {
+    public List<LikeVideoRes> findAllByVideoId(UUID videoId) {
 
         checkVideoId(videoId);
 
@@ -83,11 +108,11 @@ public class LikeServiceImpl implements LikeService {
     }
 
 
-    private LikeRes mapToLikeRes(LikeEntity likeEntity) {
-        LikeRes likeRes = new LikeRes();
-        likeRes.setUserId(likeEntity.getUserId());
-        likeRes.setVideoId(likeEntity.getVideoId());
-        return likeRes;
+    private LikeVideoRes mapToLikeRes(LikeEntity likeEntity) {
+        LikeVideoRes likeVideoRes = new LikeVideoRes();
+        likeVideoRes.setUserId(likeEntity.getUserId());
+        likeVideoRes.setVideoId(likeEntity.getVideoId());
+        return likeVideoRes;
     }
 
     private void checkVideoId(UUID videoId) {
