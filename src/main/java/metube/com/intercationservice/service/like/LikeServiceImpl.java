@@ -59,7 +59,7 @@ public class LikeServiceImpl implements LikeService {
         LikeEntity save = likeRepository.save(build);
 
         return LikeCommitRes.builder()
-                .commitId(save.getId())
+                .commitId(save.getVideoId())
                 .userId(save.getUserId())
                 .build();
     }
