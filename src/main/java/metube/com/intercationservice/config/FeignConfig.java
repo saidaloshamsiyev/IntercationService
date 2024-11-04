@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @Configuration
 public class FeignConfig {
+
     @Bean
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
@@ -16,7 +17,7 @@ public class FeignConfig {
 /*
             String roles = authentication.getAuthorities().stream().findFirst().get().getAuthority();
 */
-            requestTemplate.header("X-Username",username);
+            requestTemplate.header("Authorization",username);
             /*requestTemplate.header("X-Roles",roles);*/
 
         };
