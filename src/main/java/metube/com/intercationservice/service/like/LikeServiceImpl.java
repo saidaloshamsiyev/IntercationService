@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import metube.com.intercationservice.clients.VideoServiceClient;
 import metube.com.intercationservice.domian.dto.request.LIkeVideoReq;
 import metube.com.intercationservice.domian.dto.request.LikeCommitReq;
+import metube.com.intercationservice.domian.dto.response.CommitRes;
 import metube.com.intercationservice.domian.dto.response.LikeCommitRes;
 import metube.com.intercationservice.domian.dto.response.LikeVideoRes;
 import metube.com.intercationservice.domian.dto.response.VideoResponse;
@@ -82,7 +83,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
 
-    private void delete(UUID id) {
+    public void delete(UUID id) {
         likeRepository.deleteById(id);
     }
 
@@ -122,5 +123,14 @@ public class LikeServiceImpl implements LikeService {
         if (videoResponse == null) {
             throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
         }
+    }
+
+    public void deleteVideoLikes(UUID videoId) {
+        for (CommitRes commitRes : commitService.findByAllCommitsVideoId(videoId)) {
+            likeRepository.deleteByVideoId(commitRes.getId());
+        }
+
+
+        likeRepository.deleteByVideoId(videoId);
     }
 }

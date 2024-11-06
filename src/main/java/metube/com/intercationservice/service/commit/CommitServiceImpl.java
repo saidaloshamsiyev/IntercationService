@@ -102,4 +102,8 @@ public class CommitServiceImpl implements CommitService{
             throw new BaseException("Video not found", HttpStatus.NOT_FOUND.value());
         }
     }
+
+    public void deleteVideoAllCommits(UUID videoId) {
+        commitRepository.deleteByVideoId(videoId);
+    }
 }
