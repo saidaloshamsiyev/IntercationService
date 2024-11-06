@@ -14,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class CommitRes {
+    private UUID id;
     private UUID userId;
     private String comment;
     private UUID videoId;
