@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.UUID;
 
-@FeignClient(name = "VIDEO-SERVICE",url = "http://localhost:8086", configuration = FeignConfig.class)
+@FeignClient(name = "VIDEO-SERVICE", configuration = FeignConfig.class)
 public interface VideoServiceClient {
     @GetMapping("/api/video/finById/{id}")
     VideoResponse getVideo(@PathVariable("id") UUID id);
